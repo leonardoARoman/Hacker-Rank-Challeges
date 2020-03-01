@@ -1,0 +1,1 @@
+constans.o: ../constans.c
