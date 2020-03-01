@@ -1,4 +1,4 @@
-#include "../header/countingpairs.h"
+#include "countingpairs.h"
 
 // add key value pair
 void put(Map *map, int key, int size)

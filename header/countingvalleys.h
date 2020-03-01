@@ -28,10 +28,9 @@ typedef struct Terrain
 	struct Terrain* nextTerrain;
 } Terrain;
 
-void AddTerrain(Terrain*);
 void countingValleys(char*, int);
 Terrain* getHead();
 void printPath();
-void deleteTerrain(Terrain*);
+void deleteTerrain();
 
 #endif /* COUNTINGVALLEYS_H */

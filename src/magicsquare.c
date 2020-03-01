@@ -1,4 +1,4 @@
-#include "../header/magicsquare.h"
+#include "magicsquare.h"
 #import <math.h>
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -148,6 +148,7 @@ int calcsum_path(path_t** path_arr,int num_paths,int num_cells, int magic_const)
 			{
 				if(path_arr[i]->elements[j]->istaken == false)
 				{
+					// Update cell's data
 					path_arr[i]->elements[j]->data += difference;
 					update_sum(path_arr[i],magic_const,num_cells);
 					// we need to recursively check if the cell will work for all non magic paths
