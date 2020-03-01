@@ -1,6 +1,6 @@
 /**
  * @brief 	 Magic Box
- * 			 Solution for Hacker Rank's Magic Box challenge
+ * 			 Solution for Hacker Rank's Forming a Magic Square challenge
  *
  * @author	 Hacker Rank www.hackerrank.com
  * 			 "We define a magic square to be an n x n matrix of distinct positive integers

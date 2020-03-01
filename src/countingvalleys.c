@@ -1,4 +1,4 @@
-#include "header/countingvalleys.h"
+#include "../header/countingvalleys.h"
 
 ///////////////////////////////////////////////////////////////
 // Private variable to store the head of the list
