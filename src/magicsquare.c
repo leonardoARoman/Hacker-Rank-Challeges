@@ -4,10 +4,10 @@
 ///////////////////////////////////////////////////////////////////////////////////
 // Private helper methods
 ///////////////////////////////////////////////////////////////////////////////////
-static void set_magicpath(path_t* path, int size);
-static void update_sum(path_t* path,int magic_const,int size);
-static cell_t* makecell(uint16_t row, uint16_t col, uint16_t data);
-static path_t* makepath(char* type, int size);
+static inline void set_magicpath(Path_t* path, int size);
+static inline void update_sum(Path_t* path,int magic_const,int size);
+static inline Cell_t* makecell(uint16_t row, uint16_t col, uint16_t data);
+static inline Path_t* makepath(char* type, int size);
 
 ///////////////////////////////////////////////////////////////////////////////////
 // @param
@@ -15,13 +15,13 @@ static path_t* makepath(char* type, int size);
 // @param
 // @return
 ///////////////////////////////////////////////////////////////////////////////////
-bool makearray_cell(cell_t*** cell_arr,int** arr, int size)
+bool makearray_cell(Cell_t*** cell_arr,int** arr, int size)
 {
 	//bool success = false;
 	printf("Allocating memory for Magic Square\n");
 	for (int i = 0; i < size; i++)
 	{
-		cell_arr[i] = malloc(size * sizeof(cell_t));
+		cell_arr[i] = malloc(size * sizeof(Cell_t));
 		printf("%p...................cells[%i]...............base address\n",cell_arr[i],i);
 		for (int j = 0; j < size; j++)
 		{
@@ -38,9 +38,9 @@ bool makearray_cell(cell_t*** cell_arr,int** arr, int size)
 // @param
 // @return
 ///////////////////////////////////////////////////////////////////////////////////
-static cell_t* makecell(uint16_t row, uint16_t col, uint16_t data)
+static inline Cell_t* makecell(uint16_t row, uint16_t col, uint16_t data)
 {
-	cell_t* cell = malloc(sizeof(cell_t));
+	Cell_t* cell = malloc(sizeof(Cell_t));
 	cell->row = row;
 	cell->col = col;
 	cell->data = data;
@@ -55,22 +55,22 @@ static cell_t* makecell(uint16_t row, uint16_t col, uint16_t data)
 // @param
 // @return
 ///////////////////////////////////////////////////////////////////////////////////
-bool makearray_path(path_t** path_arr, cell_t*** cell_arr, int size)
+bool makearray_path(Path_t** path_arr, Cell_t*** cell_arr, int size)
 {
 	// Allocate memory for diagonal 1
-	path_t* diag1 = makepath("diagonal",size);
+	Path_t* diag1 = makepath("diagonal",size);
 	printf("%p...................diag1..................base address\n",diag1);
 	// Allocate memory for diagonal 2
-	path_t* diag2 = makepath("diagonal",size);
+	Path_t* diag2 = makepath("diagonal",size);
 	printf("%p...................diag2..................base address\n",diag2);
 	int i;
 	for (i = 0; i < size; i++)
 	{
 		// Allocate memory for each row
-		path_t* row = makepath("row",size);
+		Path_t* row = makepath("row",size);
 		printf("%p...................row....................base address\n",row);
 		// Allocate memory for each column
-		path_t* col = makepath("column",size);
+		Path_t* col = makepath("column",size);
 		printf("%p...................column.................base address\n",col);
 		// populate array of paths
 		for (int j = 0; j < size; j++)
@@ -109,13 +109,13 @@ bool makearray_path(path_t** path_arr, cell_t*** cell_arr, int size)
 // @param
 // @return
 ///////////////////////////////////////////////////////////////////////////////////
-static path_t* makepath(char* type, int size)
+static inline Path_t* makepath(char* type, int size)
 {
-	path_t* path = malloc(sizeof(path_t));
+	Path_t* path = malloc(sizeof(Path_t));
 	path->type = type;
 	path->sum = 0;
 	path->ismagic = false;
-	path->elements = malloc(size * sizeof(path_t));
+	path->elements = malloc(size * sizeof(Path_t));
 
 	return path;
 }
@@ -124,34 +124,46 @@ static path_t* makepath(char* type, int size)
 // @param
 // @return
 ///////////////////////////////////////////////////////////////////////////////////
-int calcsum_path(path_t** path_arr,int num_paths,int num_cells, int magic_const)
+int calcsum_path(Path_t** path_arr,int num_paths,int num_cells, int magic_const)
 {
 	// for each path's sum, find the ones with magic constant
 	for(int i = 0; i < num_paths; i++)
 	{
-		if(path_arr[i]->sum == magic_const)
+		Path_t* path = path_arr[i];
+		if(path->sum == magic_const)
 		{
 			// mark path as magic path
-			set_magicpath(path_arr[i],num_cells);
-			printf("The sum of %s %i is a magic constant\n",path_arr[i]->type,(i+1)%3);
+			set_magicpath(path,num_cells);
+			printf("The sum of %s %i is a magic constant\n",path->type,(i+1)%3);
 		}
 	}
 	// for each non magic paths, make changes
 	for(int i = 0; i < num_paths; i++)
 	{
-		if(path_arr[i]->ismagic == false)
+		Path_t* path = path_arr[i];
+		// change value of cell for paths that are not magic
+		if(path->ismagic == false)
 		{
-			// change value of cell for paths that are not magic
-			int difference = magic_const - path_arr[i]->sum;
-			printf("difference %i\n",difference);
+			// for each cell in path, find the ones that are not taken by a magic path
 			for(int j = 0; j < num_cells; j++)
 			{
-				if(path_arr[i]->elements[j]->istaken == false)
+				Cell_t* cell = path->elements[j];
+				if(cell->istaken == false)
 				{
+					int sum = path->sum;
 					// Update cell's data
-					path_arr[i]->elements[j]->data += difference;
-					update_sum(path_arr[i],magic_const,num_cells);
-					// we need to recursively check if the cell will work for all non magic paths
+					int difference = abs(sum - magic_const);
+					printf("difference %i\n",difference);
+					if(sum > magic_const)
+					{
+						int data = abs(difference - cell->data);
+						cell->data = data == 0 ? 1 : data;
+					}
+					else
+					{
+						cell->data += difference;
+					}
+					update_sum(path,magic_const,num_cells);
 				}
 			}
 		}
@@ -163,7 +175,7 @@ int calcsum_path(path_t** path_arr,int num_paths,int num_cells, int magic_const)
 // @param
 // @return
 ///////////////////////////////////////////////////////////////////////////////////
-static void update_sum(path_t* path, int magic_const, int size)
+static inline void update_sum(Path_t* path, int magic_const, int size)
 {
 	int newsum = 0;
 	for(int i = 0; i < size; i++)
@@ -182,7 +194,7 @@ static void update_sum(path_t* path, int magic_const, int size)
 // @param
 // @return
 ///////////////////////////////////////////////////////////////////////////////////
-static void set_magicpath(path_t* path, int size)
+static inline void set_magicpath(Path_t* path, int size)
 {
 	path->ismagic = true;
 	for(int j = 0; j < size; j++)
@@ -196,7 +208,7 @@ static void set_magicpath(path_t* path, int size)
 // @param
 // @param
 ///////////////////////////////////////////////////////////////////////////////////
-void printmagicsquare(cell_t*** cells,int size)
+void printmagicsquare(Cell_t*** cells,int size)
 {
 	printf("magic square\n");
 	printf(" _______\n");
@@ -216,7 +228,7 @@ void printmagicsquare(cell_t*** cells,int size)
 // @param
 // @param
 ///////////////////////////////////////////////////////////////////////////////////
-void deletearray_cell(cell_t*** cells,int size)
+void deletearray_cell(Cell_t*** cells,int size)
 {
 	printf("Deleting %ix%i magic square\n",size,size);
 	printf(" _______\n");
@@ -240,7 +252,7 @@ void deletearray_cell(cell_t*** cells,int size)
 // @param
 // @param
 ///////////////////////////////////////////////////////////////////////////////////
-void printpaths(path_t** path_arr,int size)
+void printpaths(Path_t** path_arr,int size)
 {
 	printf("magic square's paths\n");
 	for(int i = 0; i < 8; i++)
@@ -258,7 +270,7 @@ void printpaths(path_t** path_arr,int size)
 // @param
 // @param
 ///////////////////////////////////////////////////////////////////////////////////
-void deletearray_path(path_t** path_arr,int size)
+void deletearray_path(Path_t** path_arr,int size)
 {
 
 }

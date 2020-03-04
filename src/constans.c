@@ -17,7 +17,7 @@ char CONSTANT_steps[] = {
 
 int row1[] = {1,3,5};
 int row2[] = {2,4,6};
-int row3[] = {7,8,9};
+int row3[] = {9,8,7};
 int* CONSTANT_magicsquare[] = { row1, row2, row3 };
 
 int CONSTANT_magicsquare2[][3] = { {1,3,5}, {6,4,6}, {7,8,9} };

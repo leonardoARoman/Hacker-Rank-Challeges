@@ -46,7 +46,6 @@ void countingValleys(char* steps, int size)
 			printf("step %c: %i\n",steps[i],stepcount);
 			if(valley == NULL)
 			{
-				printf("Warning: allocating memory for a valley!\n");
 				valley = (Terrain*)malloc(sizeof(Terrain)); // possible memory leak at one step up, one step down.
 				valley->nextTerrain = NULL;
 			}
@@ -95,14 +94,15 @@ static void AddTerrain(Terrain* terrain)
 	if(head==NULL)
 	{
 		head = (Terrain*)0x10000000;
-		printf("%p...................head...............base address\n",head);
 		terrain->nextTerrain = NULL;
 		head = terrain;
+		printf("%p...................Terrain...............%s allocated\n",head,head->name);
 	}
 	else
 	{
 		terrain->nextTerrain = head;
 		head = terrain;
+		printf("%p...................Terrain...............%s allocated\n",head,head->name);
 	}
 	//free(terrain);
 	//printf("%s of size %i added to Hiker's log. Freeing [%s] at memory %lu\n",head->name,head->lenght,head->name,&terrain);
@@ -143,7 +143,7 @@ void deleteTerrain()
 	while(curr != NULL)
 	{
 		free(curr);
-		printf("%p...................free...............%s\n",curr,curr->name);
+		printf("%p...................Terrain...............%s freed\n",curr,curr->name);
 		curr = curr->nextTerrain;
 	}
 	free(curr);

@@ -31,8 +31,8 @@ typedef struct Cell
 	// flag, path's sum equals magic constant
 	bool istaken;
 	// neighbors
-	//struct cell_t* neighbors;
-} cell_t;
+	//struct Cell_t* neighbors;
+} Cell_t;
 
 typedef struct Path
 {
@@ -43,15 +43,15 @@ typedef struct Path
 	// the sum is perfect
 	bool ismagic;
 	// array of integers to store path elements
-	cell_t** elements;
-} path_t;
+	Cell_t** elements;
+} Path_t;
 
-bool makearray_cell(cell_t***, int**, int);
-bool makearray_path(path_t**, cell_t***, int);
-int calcsum_path(path_t**, int, int, int);
-void printmagicsquare(cell_t***, int);
-void deletearray_cell(cell_t***, int);
-void printpaths(path_t**, int);
-void deletearray_path(path_t**, int);
+bool makearray_cell(Cell_t***, int**, int);
+bool makearray_path(Path_t**, Cell_t***, int);
+int calcsum_path(Path_t**, int, int, int);
+void printmagicsquare(Cell_t***, int);
+void deletearray_cell(Cell_t***, int);
+void printpaths(Path_t**, int);
+void deletearray_path(Path_t**, int);
 
 #endif /* MAGIC_SQUARE_H */
