@@ -7,19 +7,25 @@ C_SRCS += \
 ../src/constans.c \
 ../src/countingpairs.c \
 ../src/countingvalleys.c \
-../src/magicsquare.c 
+../src/fileInterface.c \
+../src/magicsquare.c \
+../src/synchronousshopping.c 
 
 OBJS += \
 ./src/constans.o \
 ./src/countingpairs.o \
 ./src/countingvalleys.o \
-./src/magicsquare.o 
+./src/fileInterface.o \
+./src/magicsquare.o \
+./src/synchronousshopping.o 
 
 C_DEPS += \
 ./src/constans.d \
 ./src/countingpairs.d \
 ./src/countingvalleys.d \
-./src/magicsquare.d 
+./src/fileInterface.d \
+./src/magicsquare.d \
+./src/synchronousshopping.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

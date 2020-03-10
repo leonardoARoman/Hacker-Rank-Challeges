@@ -13,11 +13,16 @@
 
 //extern int CONSTANT_numbers[];
 //extern char CONSTANT_steps[];
-
-extern int* CONSTANT_magicsquare[];
+//extern int* CONSTANT_magicsquare[];
 
 int main()
 {
+//	size_t maxInt = 4294967295;
+//	size_t maxbin = 0b11111111111111111111111111111111;
+//	size_t maxhex = 0xffffffff; // 4294967295
+//	printf("max binary %lu\n",maxbin);
+//	printf("max hex    %lu\n",maxhex);
+//	printf("max int    %lu\n",maxInt);
 	//  problem 1: number of pairs
 	//findNumberOfPairs(CONSTANT_numbers,100);
 
@@ -26,21 +31,25 @@ int main()
 
 	// Problem 3: Magic square
 	// Array of pointers of type path_t
-	int num_cells = 3;
-	int num_paths = 8;
-	Cell_t** magic_square[num_cells];
-	bool init = makearray_cell(magic_square,CONSTANT_magicsquare,num_cells);
-	Path_t* path_arr[num_paths];
-	bool initpaths = makearray_path(path_arr,magic_square,num_cells);
-	if(init == true && initpaths==true)
-	{
-		printmagicsquare(magic_square,num_cells);
-		printpaths(path_arr,num_cells);
-		calcsum_path(path_arr,num_paths,num_cells,MAGIC_CONST);
-		printmagicsquare(magic_square,num_cells);
-		printpaths(path_arr,num_cells);
-		deletearray_cell(magic_square,num_cells);
-	}
+//	int num_cells = 3;
+//	int num_paths = 8;
+//	Cell_t** magic_square[num_cells];
+//	bool init = makearray_cell(magic_square,CONSTANT_magicsquare,num_cells);
+//	Path_t* path_arr[num_paths];
+//	bool initpaths = makearray_path(path_arr,magic_square,num_cells);
+//	if(init == true && initpaths==true)
+//	{
+//		printmagicsquare(magic_square,num_cells);
+//		printpaths(path_arr,num_cells);
+//		calcsum_path(path_arr,num_paths,num_cells,MAGIC_CONST);
+//		printmagicsquare(magic_square,num_cells);
+//		printpaths(path_arr,num_cells);
+//		deletearray_cell(magic_square,num_cells);
+//	}
+
+	// Problem 4 synchronous shopping
+	char* storeFile = "stores.csv";		/* csv file containing store record */
+	char* line = open(storeFile);
 
 	return 0;
 }
