@@ -17,36 +17,41 @@
  *
  * @solution lroman 03/5/2020
  */
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
 #ifndef SYSNCHRONOUS_SHOPPING_H
 #define SYSNCHRONOUS_SHOPPING_H
 
-
-typedef struct Store
+typedef struct Fish_t
 {
-	char* m_storeName;
-	//char* m_fishType[4];
-	bool m_hasBeenVisited;
-	struct Store_t* nextStore;
+	char* m_fishName;
+	struct Fish_t* m_nextFish;
+
+} Fish_t;
+
+typedef struct Store_t
+{
+	char* m_storeName; 				/* string 		Store Name 				 */
+	Fish_t* m_fishList;				/* StringArray 	Types of Fishes  	 	 */
+	bool m_hasBeenVisited;			/* boolean 		Flag 					 */
+	struct Store_t* m_nextStore;	/* Store_t* 	Shortest Distance Store	 */
 
 } Store_t;
 
-typedef struct Path
+typedef struct StorePath
 {
 	Store_t m_storeA;
 	Store_t m_storeB;
 	uint32_t m_distance;
 
-} Path_t;
+} StorePath_t;
 
 typedef struct Cat
 {
 	char* m_cat;
 	char* m_fishes[4];
-	Path_t* m_path;
+	StorePath_t* m_path;
 
 } Cat_t;
 
@@ -56,6 +61,6 @@ typedef struct RoadMap
 
 } RoadMap_t;
 
-void buildStoreArrayList(char* fileName, Store_t* head);
+Store_t* buildStoreList(const char*);
 uint32_t getStoreCount();
 #endif /* SYSNCHRONOUS_SHOPPING_H */

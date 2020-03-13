@@ -7,6 +7,10 @@
 #include "countingpairs.h"
 #include "countingvalleys.h"
 #include "magicsquare.h"
+#include "fileInterface.h"
+#include "synchronousshopping.h"
+#include "datastructures.h"
+#include <string.h>
 
 #define SIZE (12)
 #define MAGIC_CONST (15)
@@ -17,12 +21,12 @@
 
 int main()
 {
-//	size_t maxInt = 4294967295;
-//	size_t maxbin = 0b11111111111111111111111111111111;
-//	size_t maxhex = 0xffffffff; // 4294967295
-//	printf("max binary %lu\n",maxbin);
-//	printf("max hex    %lu\n",maxhex);
-//	printf("max int    %lu\n",maxInt);
+	//	size_t maxInt = 4294967295;
+	//	size_t maxbin = 0b11111111111111111111111111111111;
+	//	size_t maxhex = 0xffffffff; // 4294967295
+	//	printf("max binary %lu\n",maxbin);
+	//	printf("max hex    %lu\n",maxhex);
+	//	printf("max int    %lu\n",maxInt);
 	//  problem 1: number of pairs
 	//findNumberOfPairs(CONSTANT_numbers,100);
 
@@ -31,25 +35,49 @@ int main()
 
 	// Problem 3: Magic square
 	// Array of pointers of type path_t
-//	int num_cells = 3;
-//	int num_paths = 8;
-//	Cell_t** magic_square[num_cells];
-//	bool init = makearray_cell(magic_square,CONSTANT_magicsquare,num_cells);
-//	Path_t* path_arr[num_paths];
-//	bool initpaths = makearray_path(path_arr,magic_square,num_cells);
-//	if(init == true && initpaths==true)
-//	{
-//		printmagicsquare(magic_square,num_cells);
-//		printpaths(path_arr,num_cells);
-//		calcsum_path(path_arr,num_paths,num_cells,MAGIC_CONST);
-//		printmagicsquare(magic_square,num_cells);
-//		printpaths(path_arr,num_cells);
-//		deletearray_cell(magic_square,num_cells);
-//	}
+	//	int num_cells = 3;
+	//	int num_paths = 8;
+	//	Cell_t** magic_square[num_cells];
+	//	bool init = makearray_cell(magic_square,CONSTANT_magicsquare,num_cells);
+	//	Path_t* path_arr[num_paths];
+	//	bool initpaths = makearray_path(path_arr,magic_square,num_cells);
+	//	if(init == true && initpaths==true)
+	//	{
+	//		printmagicsquare(magic_square,num_cells);
+	//		printpaths(path_arr,num_cells);
+	//		calcsum_path(path_arr,num_paths,num_cells,MAGIC_CONST);
+	//		printmagicsquare(magic_square,num_cells);
+	//		printpaths(path_arr,num_cells);
+	//		deletearray_cell(magic_square,num_cells);
+	//	}
+
 
 	// Problem 4 synchronous shopping
-	char* storeFile = "stores.csv";		/* csv file containing store record */
-	char* line = open(storeFile);
+	char* storeFile = "files/stores.csv";		/* csv file containing store record */
+	bool exists = isFile(storeFile);
+	if(exists == true)
+	{
+		printf("file exists\n");
+		size_t size = fileSize(storeFile, row);
+		printf("Number of rows %lu\n", size);
+		Store_t* storeList = buildStoreList(storeFile);
+		//storeList = buildStoreList(storeFile);
+		for(Store_t* ptr = storeList; ptr != NULL; ptr = ptr->m_nextStore){
+			printf("store name %s\n",ptr->m_storeName);
+			//free(ptr->m_storeName);
+			for(Fish_t* fishPtr = ptr->m_fishList; fishPtr != NULL; fishPtr = fishPtr->m_nextFish)
+			{
+				printf("\tTypes of fish %s\n",fishPtr->m_fishName);
+				//free(fishPtr);
+			}
+			//free(ptr);
+		}
+
+	}
+	else
+	{
+		printf("file does not exist");
+	}
 
 	return 0;
 }
