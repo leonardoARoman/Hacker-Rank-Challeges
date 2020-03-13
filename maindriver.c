@@ -54,23 +54,25 @@ int main()
 
 	// Problem 4 synchronous shopping
 	char* storeFile = "files/stores.csv";		/* csv file containing store record */
-	bool exists = isFile(storeFile);
+	char* centersFile = "files/shopping_centers.csv";		/* csv file containing store record */
+	bool exists = isFile(centersFile);
 	if(exists == true)
 	{
 		printf("file exists\n");
 		size_t size = fileSize(storeFile, row);
 		printf("Number of rows %lu\n", size);
-		Store_t* storeList = buildStoreList(storeFile);
+		StorePtr_t storeList = buildStoreList(storeFile);
 		//storeList = buildStoreList(storeFile);
-		for(Store_t* ptr = storeList; ptr != NULL; ptr = ptr->m_nextStore){
-			printf("store name %s\n",ptr->m_storeName);
-			//free(ptr->m_storeName);
-			for(Fish_t* fishPtr = ptr->m_fishList; fishPtr != NULL; fishPtr = fishPtr->m_nextFish)
+		StorePath_t* path = buildStorePathList(centersFile);
+		for(StorePtr_t ptr = storeList; ptr != NULL; ptr = ptr->m_nextStore){
+			printf("store %s has %i types of fish.\n",ptr->m_storeName,ptr->numberFish);
+			free(ptr->m_storeName);
+			for(FishPtr_t fishPtr = ptr->m_fishList; fishPtr != NULL; fishPtr = fishPtr->m_nextFish)
 			{
-				printf("\tTypes of fish %s\n",fishPtr->m_fishName);
-				//free(fishPtr);
+				printf("\tType of fish: %s\n",fishPtr->m_fishName);
+				free(fishPtr);
 			}
-			//free(ptr);
+			free(ptr);
 		}
 
 	}

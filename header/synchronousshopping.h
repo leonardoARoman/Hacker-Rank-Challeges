@@ -23,27 +23,31 @@
 #ifndef SYSNCHRONOUS_SHOPPING_H
 #define SYSNCHRONOUS_SHOPPING_H
 
-typedef struct Fish_t
+struct Fish_t
 {
 	char* m_fishName;
 	struct Fish_t* m_nextFish;
 
-} Fish_t;
+};
+typedef struct Fish_t* FishPtr_t;
 
-typedef struct Store_t
+struct Store_t
 {
-	char* m_storeName; 				/* string 		Store Name 				 */
-	Fish_t* m_fishList;				/* StringArray 	Types of Fishes  	 	 */
-	bool m_hasBeenVisited;			/* boolean 		Flag 					 */
-	struct Store_t* m_nextStore;	/* Store_t* 	Shortest Distance Store	 */
+	char* m_storeName;           /* string         Store Name                */
+	uint8_t numberFish;          /* uint8_t        number of fish type       */
+	FishPtr_t m_fishList;        /* StringArray    Types of Fishes           */
+	bool m_hasBeenVisited;       /* boolean        Flag                      */
+	struct Store_t* m_nextStore; /* Store_t*       Shortest Distance Store	 */
 
-} Store_t;
+};
+typedef struct Store_t* StorePtr_t;
 
-typedef struct StorePath
+typedef struct StorePath_t
 {
-	Store_t m_storeA;
-	Store_t m_storeB;
+	StorePtr_t m_storeA;
+	StorePtr_t m_storeB;
 	uint32_t m_distance;
+	struct StorePath_t* nextPath;
 
 } StorePath_t;
 
@@ -57,10 +61,12 @@ typedef struct Cat
 
 typedef struct RoadMap
 {
-	Store_t* m_stores[4];
+	StorePtr_t m_stores[4];
 
 } RoadMap_t;
 
-Store_t* buildStoreList(const char*);
+StorePtr_t buildStoreList(const char*);
+StorePtr_t findStore(const char*);
+StorePath_t* buildStorePathList(const char*);
 uint32_t getStoreCount();
 #endif /* SYSNCHRONOUS_SHOPPING_H */
