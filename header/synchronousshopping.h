@@ -42,20 +42,21 @@ struct Store_t
 };
 typedef struct Store_t* StorePtr_t;
 
-typedef struct StorePath_t
+struct StorePath_t
 {
 	StorePtr_t m_storeA;
 	StorePtr_t m_storeB;
-	uint32_t m_distance;
+	int* m_distance;
 	struct StorePath_t* nextPath;
 
-} StorePath_t;
+};
+typedef struct StorePath_t* StorePathPtr_t;
 
 typedef struct Cat
 {
 	char* m_cat;
 	char* m_fishes[4];
-	StorePath_t* m_path;
+	StorePathPtr_t* m_path;
 
 } Cat_t;
 
@@ -67,6 +68,6 @@ typedef struct RoadMap
 
 StorePtr_t buildStoreList(const char*);
 StorePtr_t findStore(const char*);
-StorePath_t* buildStorePathList(const char*);
+StorePathPtr_t buildStorePathList(const char*);
 uint32_t getStoreCount();
 #endif /* SYSNCHRONOUS_SHOPPING_H */

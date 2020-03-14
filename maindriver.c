@@ -51,7 +51,7 @@ int main()
 	//		deletearray_cell(magic_square,num_cells);
 	//	}
 
-
+	*((/* cast to a pointer */unsigned int*)0x7ff87d401b60);
 	// Problem 4 synchronous shopping
 	char* storeFile = "files/stores.csv";		/* csv file containing store record */
 	char* centersFile = "files/shopping_centers.csv";		/* csv file containing store record */
@@ -62,8 +62,14 @@ int main()
 		size_t size = fileSize(storeFile, row);
 		printf("Number of rows %lu\n", size);
 		StorePtr_t storeList = buildStoreList(storeFile);
-		//storeList = buildStoreList(storeFile);
-		StorePath_t* path = buildStorePathList(centersFile);
+		StorePathPtr_t path = buildStorePathList(centersFile);
+		for(StorePathPtr_t ptr = path; ptr!=NULL; ptr = ptr->nextPath)
+		{
+			printf("Path from %s to %s with distance %p.\n",
+					ptr->m_storeA->m_storeName,
+					ptr->m_storeB->m_storeName,
+					&ptr->m_distance);
+		}
 		for(StorePtr_t ptr = storeList; ptr != NULL; ptr = ptr->m_nextStore){
 			printf("store %s has %i types of fish.\n",ptr->m_storeName,ptr->numberFish);
 			free(ptr->m_storeName);
@@ -74,7 +80,6 @@ int main()
 			}
 			free(ptr);
 		}
-
 	}
 	else
 	{

@@ -1,8 +1,8 @@
-store1,store2,10
-store2,store3,5
-store1,store3,10
-store3,store4,2
-store1,store4,10
-store4,store5,2
-store3,store5,5
-store2,store5,4
+store1,store2,10,
+store2,store3,5,
+store1,store3,10,
+store3,store4,2,
+store1,store4,10,
+store4,store5,2,
+store3,store5,5,
+store2,store5,4,

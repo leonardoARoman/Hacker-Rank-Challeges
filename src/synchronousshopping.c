@@ -4,11 +4,12 @@
 
 // To keep a count of stores created from the csv file
 static uint32_t storeCount;
-static StorePtr_t head;
+static StorePtr_t headStore;
 
 // private helper methods
-static inline StorePtr_t makeStore(char*);
+static inline StorePtr_t StorePtr(char*);
 static inline FishPtr_t makeFishList(FishPtr_t, char*);
+static inline StorePathPtr_t StorePathPtr(char*, char*,int);
 
 ///////////////////////////////////////////////////////////////////////////////////
 // @brief open file to create a linked list of stores and returns the head
@@ -25,7 +26,7 @@ StorePtr_t buildStoreList(const char* fileName)
 	{
 		int i = 0;                            /* reset count for next store                 */
 		char *token = strtok(buff,",");       /* point to the first string before a comma   */
-		StorePtr_t store = makeStore(token);  /* declare Store_t ptr and define attributes  */
+		StorePtr_t store = StorePtr(token);   /* declare Store_t ptr and define attributes  */
 		while (token!=NULL)                   /* traverse all commas                        */
 		{
 			token = strtok(NULL,",");         /* point to next string before a comma        */
@@ -35,18 +36,18 @@ StorePtr_t buildStoreList(const char* fileName)
 			}
 		}
 		store->numberFish = i;
-		if(head == NULL){
-			head = store;
+		if(headStore == NULL){
+			headStore = store;
 		}else{
-			store->m_nextStore = head;
-			head = store;
+			store->m_nextStore = headStore;
+			headStore = store;
 		}
 	}
 	fclose((FILE*)stream);
-	return head;
+	return headStore;
 }
 
-static inline StorePtr_t makeStore(char* token)
+static inline StorePtr_t StorePtr(char* token)
 {
 	struct Store_t* store = malloc(sizeof(struct Store_t));
 	store->m_storeName = strdup(token);
@@ -85,44 +86,51 @@ uint32_t getStoreCount()
 // @param fileName 	-csv file with paths record
 // @return head  	-returns head of the store list
 ///////////////////////////////////////////////////////////////////////////////////
-StorePath_t* buildStorePathList(const char* file)
+StorePathPtr_t buildStorePathList(const char* file)
 {
 	const int SIZE = 1024;
-	static StorePath_t* head = NULL;
+	StorePathPtr_t headPath = NULL;
 	FILE *stream = fopen(file,"r");
 	char buff[SIZE];
 	while (fgets(buff,SIZE,(FILE*)stream))    /* Stream line by line and put it in buffer   */
 	{
-		char *store1 = strtok(buff,",");      /* point to the first string before a comma   */
-		char *store2 = strtok(NULL,",");      /* point to the first string before a comma   */
-		uint32_t distance = atoi(strtok(NULL,","));
+		char *storeA = strtok(buff,",");      /* point to the first string before a comma   */
+		char *storeB = strtok(NULL,",");      /* point to the first string before a comma   */
+		char *number = strdup(strtok(NULL,","));
+		int distace = atoi(number);
 
-		StorePtr_t storeA = findStore(store1);   /* Find store in linked list by name  */
-		StorePtr_t storeB = findStore(store2);   /* Find store in linked list by name  */
-		StorePath_t* path = malloc(sizeof(StorePath_t));
-		path->m_storeA = storeA;
-		path->m_storeB = storeB;
-		path->m_distance = distance;
-
-		if(head == NULL){
-			head = path;
+		StorePathPtr_t path = StorePathPtr(storeA,storeB,distace);
+		if(headPath == NULL){
+			headPath = path;
 		}else{
-			path->nextPath = head;
-			head = path;
+			path->nextPath = headPath;
+			headPath = path;
 		}
 	}
 	fclose((FILE*)stream);
-	return head;
+	return headPath;
+}
+
+static inline StorePathPtr_t StorePathPtr(char* store1, char* store2, int distance)
+{
+	StorePtr_t storeA = findStore(store1);   /* Find store in linked list by name  */
+	StorePtr_t storeB = findStore(store2);   /* Find store in linked list by name  */
+	StorePathPtr_t path = malloc(sizeof(StorePathPtr_t));
+	path->m_distance = malloc(sizeof(int));
+	memcpy(path->m_distance, &distance, sizeof(int));
+	path->m_storeA = storeA;
+	path->m_storeB = storeB;
+	path->nextPath = NULL;
+	return path;
 }
 
 StorePtr_t findStore(const char* storeName)
 {
-	StorePtr_t ptr = head;
+	StorePtr_t ptr = headStore;
 	StorePtr_t store = NULL;
 	while(ptr!=NULL)
 	{
 		if(strcmp(ptr->m_storeName,storeName)==0){
-			printf("%s==%s\n",storeName,ptr->m_storeName);
 			store = ptr;
 		}
 		ptr = ptr->m_nextStore;
