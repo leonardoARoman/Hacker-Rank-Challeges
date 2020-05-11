@@ -98,7 +98,7 @@ StorePathPtr_t buildStorePathList(const char* file)
 		char *storeB = strtok(NULL,",");      /* point to the first string before a comma   */
 		char *number = strdup(strtok(NULL,","));
 		int distace = atoi(number);
-
+		free(number);
 		StorePathPtr_t path = StorePathPtr(storeA,storeB,distace);
 		if(headPath == NULL){
 			headPath = path;
@@ -116,7 +116,7 @@ static inline StorePathPtr_t StorePathPtr(char* store1, char* store2, int distan
 	StorePtr_t storeA = findStore(store1);   /* Find store in linked list by name  */
 	StorePtr_t storeB = findStore(store2);   /* Find store in linked list by name  */
 	StorePathPtr_t path = malloc(sizeof(StorePathPtr_t));
-	path->m_distance = malloc(sizeof(int));
+	path->m_distance = (int*)malloc(sizeof(int));
 	memcpy(path->m_distance, &distance, sizeof(int));
 	path->m_storeA = storeA;
 	path->m_storeB = storeB;

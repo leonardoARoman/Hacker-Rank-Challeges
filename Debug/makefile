@@ -9,6 +9,8 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include src/subdir.mk
+-include designpatterns/observer/interface/subdir.mk
+-include designpatterns/observer/subdir.mk
 -include subdir.mk
 -include objects.mk
 

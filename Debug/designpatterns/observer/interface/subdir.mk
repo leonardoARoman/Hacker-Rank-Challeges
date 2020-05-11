@@ -4,35 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/class.c \
-../src/constans.c \
-../src/countingpairs.c \
-../src/countingvalleys.c \
-../src/fileInterface.c \
-../src/magicsquare.c \
-../src/synchronousshopping.c 
+../designpatterns/observer/interface/publisher.c 
 
 OBJS += \
-./src/class.o \
-./src/constans.o \
-./src/countingpairs.o \
-./src/countingvalleys.o \
-./src/fileInterface.o \
-./src/magicsquare.o \
-./src/synchronousshopping.o 
+./designpatterns/observer/interface/publisher.o 
 
 C_DEPS += \
-./src/class.d \
-./src/constans.d \
-./src/countingpairs.d \
-./src/countingvalleys.d \
-./src/fileInterface.d \
-./src/magicsquare.d \
-./src/synchronousshopping.d 
+./designpatterns/observer/interface/publisher.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-src/%.o: ../src/%.c
+designpatterns/observer/interface/%.o: ../designpatterns/observer/interface/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross GCC Compiler'
 	gcc -I"/Users/leoroman/eclipsecpp-workspace/hackerranksolutions/header" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
